@@ -1,4 +1,4 @@
-package com.example.JdrCharacter;
+package com.JdrCharacter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
