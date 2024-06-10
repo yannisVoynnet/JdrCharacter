@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fiche de personnage</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Fiche de personnage</h1>
+        <form th:object="${character}" th:action="@{/save}" method="post">
+            <div class="form-group">
+                <label for="name">Nom:</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="race">Race:</label>
+                <input type="text" id="race" th:field="*{race}" class="form-control" readonly/>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#raceModal">Choisir une race</button>
+            </div>
+            <div class="form-group">
+                <label for="characterClass">Classe:</label>
+                <input type="text" id="characterClass" th:field="*{characterClass}" class="form-control" readonly/>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#classModal">Choisir une classe</button>
+            </div>
+            <!-- Ajoute d'autres champs similaires -->
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+        </form>
+
+        <!-- Modal pour choisir une race -->
+        <div class="modal fade" id="raceModal" tabindex="-1" role="dialog" aria-labelledby="raceModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="raceModalLabel">Choisir une race</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" class="btn btn-secondary" onclick="selectRace('Humain')">Humain</button>
+                        <button type="button" class="btn btn-secondary" onclick="selectRace('Elfe')">Elfe</button>
+                        <!-- Ajoute d'autres races -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal pour choisir une classe -->
+        <div class="modal fade" id="classModal" tabindex="-1" role="dialog" aria-labelledby="classModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="classModalLabel">Choisir une classe</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" class="btn btn-secondary" onclick="selectClass('Guerrier')">Guerrier</button>
+                        <button type="button" class="btn btn-secondary" onclick="selectClass('Mage')">Mage</button>
+                        <!-- Ajoute d'autres classes -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery et Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function selectRace(race) {
+            document.getElementById('race').value = race;
+            $('#raceModal').modal('hide');
+        }
+        function selectClass(characterClass) {
+            document.getElementById('characterClass').value = characterClass;
+            $('#classModal').modal('hide');
+        }
+    </script>
+</body>
+</html>

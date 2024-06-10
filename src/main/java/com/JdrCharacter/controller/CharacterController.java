@@ -16,31 +16,30 @@ public class CharacterController {
     @GetMapping
     public String getAllCharacters(Model model) {
         model.addAttribute("characters", characterService.getAllCharacters());
-        return "characters/list";
-    }
-
-    @GetMapping("/{id}")
-    public String getCharacterById(@PathVariable Long id, Model model) {
-        model.addAttribute("character", characterService.getCharacterById(id));
-        return "characters/detail";
+        return "characters/list"; // Affiche la liste des personnages
     }
 
     @GetMapping("/new")
     public String createCharacterForm(Model model) {
         model.addAttribute("character", new Character());
-        return "characters/form";
+        return "characters/characterNew"; // Affiche le formulaire de création
     }
 
     @PostMapping
     public String saveCharacter(@ModelAttribute Character character) {
         characterService.saveCharacter(character);
-        return "redirect:/characters";
+        return "redirect:/characters"; // Redirige vers la liste des personnages
+    }
+
+    @GetMapping("/{id}")
+    public String getCharacterById(@PathVariable Long id, Model model) {
+        model.addAttribute("character", characterService.getCharacterById(id));
+        return "characters/detail"; // Affiche les détails d'un personnage
     }
 
     @GetMapping("/delete/{id}")
     public String deleteCharacter(@PathVariable Long id) {
         characterService.deleteCharacter(id);
-        return "redirect:/characters";
+        return "redirect:/characters"; // Redirige vers la liste des personnages
     }
 }
-

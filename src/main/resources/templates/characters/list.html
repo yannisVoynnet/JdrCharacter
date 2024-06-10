@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des personnages</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Liste des personnages</h1>
+    
+    <a href="/characters/new">Créer un nouveau personnage</a>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Classe</th>
+                <th>Origine</th>
+                <th>Historique</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="character : ${characters}">
+                <td th:text="${character.name}">Nom</td>
+                <td th:text="${character.characterClass}">Classe</td>
+                <td th:text="${character.origin}">Origine</td>
+                <td th:text="${character.background}">Historique</td>
+                <td>
+                    <a th:href="@{/characters/delete/{id}(id=${character.id})}">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
