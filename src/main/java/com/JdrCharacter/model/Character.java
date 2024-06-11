@@ -16,8 +16,8 @@ public class Character {
     private Origin origin; 
     private CharacterClass characterClass;
     private Background background; 
-    private int level = 1; 
-    private int hitPoint; 
+    private Integer level = 1; 
+    private Integer hitPoint; 
     private String description;
     private int[] stats = new int[6]; 
     // 0 : force, 1 : dextérité, 2 : constitution, 3 : intelligence, 4 : sagesse , 5 : charisme
@@ -54,16 +54,16 @@ public class Character {
     public void setBackground(Background background) {
         this.background = background;
     }
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
-    public int getHitPoint() {
+    public Integer getHitPoint() {
         return hitPoint;
     }
-    public void setHitPoint(int hitPoint) {
+    public void setHitPoint(Integer hitPoint) {
         this.hitPoint = hitPoint;
     }
     public String getDescription() {
@@ -91,7 +91,7 @@ public class Character {
         this.mastery = mastery;
     } 
     
-    public void setOneStat(int id,int stat){
+    public void setOneStat(Integer id,Integer stat){
         this.stats[id] = stat;
     }
     
@@ -101,10 +101,10 @@ public class Character {
     public int[] createStatsRandomLight(){
         int[] statsTmp = new int[6];
         Random rand = new Random();
-        for(int i = 0; i < 3; i++){
-            int dice1 = rand.nextInt(6)+1;
-            int dice2 = rand.nextInt(6)+1;
-            int res = dice1 + dice2;
+        for(Integer i = 0; i < 3; i++){
+            Integer dice1 = rand.nextInt(6)+1;
+            Integer dice2 = rand.nextInt(6)+1;
+            Integer res = dice1 + dice2;
 
             // on a jeté les 2d6, maintenant on ajouté 6 au résultat : 
             statsTmp[i] = res + 6;     
@@ -115,7 +115,7 @@ public class Character {
     }
 
     //fonction qui donne le bonus de maîtrise en fonction du niveau
-    public int getMasteryBonus(){
+    public Integer getMasteryBonus(){
         if(this.level < 5 ){
             return 2;
         }else if(this.level < 9){
@@ -130,19 +130,19 @@ public class Character {
     }
 
     //fonction qui récupère le modificateur en fonction d'une valeur de stats
-    private int calculateMod(int x){
+    private Integer calculateMod(Integer x){
         return (x - 10) / 2 ;
     }
 
     public int[] getMods(){
         int[] mods = new int[this.getStats().length];
-        for(int i = 0; i < this.getStats().length; i++){
+        for(Integer i = 0; i < this.getStats().length; i++){
             mods[i] = calculateMod(this.stats[i]);
         }
         return mods;
     }
 
-    public int getMod(int statsIndex){
+    public Integer getMod(Integer statsIndex){
         //ici on ne veut récupèrer qu'un seul mod
         if(statsIndex < 0 || statsIndex >= this.getStats().length){
             throw new IllegalArgumentException("Indice de statistiques invalide");
@@ -151,9 +151,9 @@ public class Character {
     }
 
     //fonction qui calcule les différents score d'attaque
-    public int getScoreAtt(String typeAtt, int statsIndex ){ 
+    public Integer getScoreAtt(String typeAtt, Integer statsIndex ){ 
         // magicStats = charisme pour un barde par exemple 
-        int mb = this.getMasteryBonus();
+        Integer mb = this.getMasteryBonus();
         if(typeAtt.equals("C")){
             return mb + this.getStats()[0]; // 0 = force
         }else if (typeAtt.equals("D")){
@@ -166,7 +166,7 @@ public class Character {
     }
 
     //fonction qui calcule le dd de sauvegarde des sorts
-    public int getDdSave(int magicStats){ 
+    public Integer getDdSave(Integer magicStats){ 
         //x doit être le modificateur de caractéristique de sort
         return 8 + this.getMasteryBonus() + magicStats;
     }
