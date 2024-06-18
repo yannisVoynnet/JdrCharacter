@@ -1,8 +1,8 @@
 package com.JdrCharacter.model;
 
-import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -20,7 +20,8 @@ public class Weapon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private WeaponName name;
+    private WeaponCategory category;
     private String description;
     private Integer attack;
     private Integer magicBonus; //1 = +1 pour touché et à l'attaque par exemple
@@ -42,15 +43,17 @@ public class Weapon {
     public Weapon() {}
 
     // Constructeur avec paramètres pour calculer le bonus d'attaque automatiquement
-    public Weapon(String name, String description, Integer damage, DamageType damageType,
-     Integer range, Integer magicBonus, Set<WeaponProperty> properties, Character character, boolean isMelee) {
+    public Weapon(WeaponName name, WeaponCategory category, Integer damage, DamageType damageType, Character character, boolean isMelee, 
+    Optional<String> description, Optional<Integer> range, Optional<Integer> magicBonus, Optional<Set<WeaponProperty>> properties) 
+    {
         this.name = name;
-        this.description = description;
+        this.category = category;
+        this.description = description.orElse("une arme basique, non magique");
         this.damage = damage;
         this.damageType = damageType;
-        this.range = range;
-        this.magicBonus = magicBonus;
-        this.properties = properties;
+        this.range = range.orElse(0);
+        this.magicBonus = magicBonus.orElse(0);
+        this.properties = properties.orElse(null);
         this.character = character;
         this.attack = calculateAttack(character);
     }
@@ -62,10 +65,10 @@ public class Weapon {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
+    public WeaponName getName() {
         return name;
     }
-    public void setName(String name) {
+    public void setName(WeaponName name) {
         this.name = name;
     }
     public String getDescription() {
@@ -79,6 +82,12 @@ public class Weapon {
     }
     public void setAttack(Integer attack) {
         this.attack = attack;
+    }
+    public WeaponCategory getCategory() {
+        return category;
+    }
+    public void setCategory(WeaponCategory category) {
+        this.category = category;
     }
     public Integer getMagicBonus() {
         return magicBonus;
@@ -122,6 +131,7 @@ public class Weapon {
     public void setCharacter(Character character) {
         this.character = character;
     }
+        
 
     private Integer calculateAttack(Character character) {
         //dague finesse + lancer         
@@ -137,5 +147,6 @@ public class Weapon {
         Integer masteryBonus = character.getMasteryBonus();
         return statBonus + this.magicBonus + masteryBonus;
     }
+
 }
 

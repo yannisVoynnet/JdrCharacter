@@ -1,0 +1,22 @@
+package com.JdrCharacter.model;
+
+public enum SkillExist {
+    ATHLETICS,
+    ACROBATICS,
+    DISCRETION,
+    SLEIGHTOFHAND,
+    ARCANA,
+    HISTORY,
+    INVESTIGATION,
+    NATURE,
+    RELIGION,
+    DRESSAGE,
+    MEDICINE,
+    PERCEPTION,
+    INSIGHT,
+    SURVIVAL,
+    INTIMIDATION,
+    PERSUASION,
+    REPRESENTATION,
+    DECEPTION
+}

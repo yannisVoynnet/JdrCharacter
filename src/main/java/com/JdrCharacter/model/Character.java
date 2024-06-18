@@ -1,7 +1,8 @@
 package com.JdrCharacter.model;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Random;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,46 @@ public class Character {
     private int[] stats = new int[6]; 
     // 0 : force, 1 : dextérité, 2 : constitution, 3 : intelligence, 4 : sagesse , 5 : charisme
     private Equipment equipment; 
-    private Mastery mastery;
+    private Map<ProficiencyType,Map<?,Boolean>> proficiencies; 
+
+    public Character(){
+        this.proficiencies = new EnumMap<>(ProficiencyType.class);
+        initProficiencies();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initProficiencies(){
+        // Initialiser les maîtrises d'armures
+        this.proficiencies.put(ProficiencyType.ARMOR, new EnumMap<>(ArmorCategory.class));
+
+        // Initialiser les maîtrises des compétences (Skills)
+        this.proficiencies.put(ProficiencyType.SKILL, new EnumMap<>(SkillExist.class));
+ 
+        // Initialiser les maîtrises des langues (Languages)
+        this.proficiencies.put(ProficiencyType.LANGUAGE, new EnumMap<>(LanguageExist.class));
+ 
+        // Initialiser les maîtrises des catégories d'armes
+        this.proficiencies.put(ProficiencyType.WEAPON_CATEGORY, new EnumMap<>(WeaponCategory.class));
+ 
+        // Initialiser les maîtrises des armes spécifiques (si on a rien ici, mais qu'on a MELEEBASIC dans category, alors il faudra lui mettre toutes les armes melee )
+        this.proficiencies.put(ProficiencyType.WEAPON_NAME, new EnumMap<>(WeaponName.class));
+    
+    }
+
+    @SuppressWarnings("unchecked")
+    public <E extends Enum<E>> void setProficiency(ProficiencyType type, E proficiency) {
+        // on demande pas s'il maîtrise, car le personnage ne maitrise pas SI ce n'est pas dans proficiencies
+        Map<Enum<?>, Boolean> proficiencyMap = (Map<Enum<?>, Boolean>) proficiencies.get(type); //on récupère la map, par exemple, SKILL et on veut ajouter deception
+        if (proficiencyMap != null) {
+            proficiencyMap.put(proficiency, true);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <E extends Enum<E>> boolean getProficiency(ProficiencyType type, E proficiency) {
+        Map<Enum<?>, Boolean> proficiencyMap = (Map<Enum<?>, Boolean>) proficiencies.get(type);
+        return proficiencyMap != null && proficiencyMap.getOrDefault(proficiency, false);
+    }
 
     public Long getId() {
         return id;
@@ -84,13 +124,6 @@ public class Character {
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
-    public Mastery getMastery() {
-        return mastery;
-    }
-    public void setMastery(Mastery mastery) {
-        this.mastery = mastery;
-    } 
-    
     public void setOneStat(Integer id,Integer stat){
         this.stats[id] = stat;
     }
@@ -166,8 +199,8 @@ public class Character {
     }
 
     //fonction qui calcule le dd de sauvegarde des sorts
-    public Integer getDdSave(Integer magicStats){ 
-        //x doit être le modificateur de caractéristique de sort
-        return 8 + this.getMasteryBonus() + magicStats;
+    public Integer getDdSave(Integer idModStats){ 
+        // idModStats doit être le modificateur de caractéristique de sort
+        return 8 + this.getMasteryBonus() + this.getMod(idModStats);
     }
 }
