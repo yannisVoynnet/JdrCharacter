@@ -30,7 +30,6 @@ public class Character {
         initProficiencies();
     }
 
-    @SuppressWarnings("unchecked")
     private void initProficiencies(){
         // Initialiser les maîtrises d'armures
         this.proficiencies.put(ProficiencyType.ARMOR, new EnumMap<>(ArmorCategory.class));

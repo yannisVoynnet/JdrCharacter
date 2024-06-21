@@ -1,7 +1,6 @@
 package com.JdrCharacter.model;
 
 import java.util.Optional;
-import java.util.Properties;
 import java.util.Set;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
